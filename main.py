@@ -930,9 +930,16 @@ def build_app():
     return app
 
 if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser(description="Khởi chạy Hệ thống Phát hiện & Kiểm chứng Tin giả Tiếng Việt")
+    parser.add_argument("--share", action="store_true", help="Tạo link công khai trực tuyến (gradio.live) để chia sẻ từ xa")
+    cli_args, _ = parser.parse_known_args()
+    is_share = cli_args.share
+
     app = build_app()
+    server_host = "0.0.0.0" if is_share else "127.0.0.1"
     try:
-        app.launch(server_name="127.0.0.1", server_port=7860, share=False, css=CUSTOM_CSS)
+        app.launch(server_name=server_host, server_port=7860, share=is_share, css=CUSTOM_CSS)
     except OSError:
         print("⚠️ Cổng 7860 đang bận, tự động chuyển sang cổng trống khả dụng...")
-        app.launch(server_name="127.0.0.1", share=False, css=CUSTOM_CSS)
+        app.launch(server_name=server_host, share=is_share, css=CUSTOM_CSS)
