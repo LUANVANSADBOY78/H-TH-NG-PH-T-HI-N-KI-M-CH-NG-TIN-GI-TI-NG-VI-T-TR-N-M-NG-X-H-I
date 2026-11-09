@@ -12,6 +12,10 @@ outputs/
 optimizer.pt
 *.ckpt
 
+# Gradio cache & certs
+.gradio/
+flagged/
+
 # Virtual environments
 venv/
 env/
