@@ -85,16 +85,91 @@ d:\doanhocsau/
 
 ---
 
-## 🚀 Hướng Dẫn Sử Dụng & Khởi Chạy
+## 🚀 Hướng Dẫn Sử Dụng & Toàn Bộ Câu Lệnh Khởi Chạy
 
-### 1. Khởi chạy Giao diện Web Toàn Diện (6 Phân Hệ)
-```powershell
+### 1. Khởi chạy Giao diện Web & Tạo Link Chia Sẻ Công Khai (Public Link)
+- **Tạo link trực tuyến (gradio.live) để gửi cho thầy cô / bạn bè dùng từ xa (trên điện thoại hoặc máy khác):**
+```bash
+python src/app.py --share
+```
+- **Chạy Web nội bộ (chỉ riêng trên máy cá nhân):**
+```bash
 python src/app.py
 ```
-Mở trình duyệt tại: **`http://127.0.0.1:7860`** để trải nghiệm:
-- **Tab 1: 🔍 Kiểm Tra Tin Tức AI**: Dán URL hoặc bài viết, chọn bật Chunking bài dài, xem kết quả 3 nhãn, giải thích từ khóa (XAI), đối chiếu bằng chứng, chỉ số bất định MC Dropout.
-- **Tab 2: 📁 Phân Tích Hàng Loạt (Batch CSV)**: Tải lên file CSV hoặc Excel và tải kết quả gắn nhãn về máy.
-- **Tab 3: ⚖️ So Sánh Hai Bài Viết**: Đối chiếu 2 bài viết để đo độ trùng lặp và phát hiện mâu thuẫn.
-- **Tab 4: 🕒 Lịch Sử Kiểm Tra**: Tìm kiếm, lọc và xuất dữ liệu lịch sử.
-- **Tab 5: 💬 Chatbot AI**: Trò chuyện hỏi đáp về tin giả, cơ chế PhoBERT.
-- **Tab 6: 📊 Admin & Nghiên Cứu Học Sâu**: Xem biểu đồ Training/Val Loss, Confusion Matrix, Bảng Ablation Study và quản lý hệ thống.
+> Mở trình duyệt tại: **`http://127.0.0.1:7860`** để trải nghiệm đầy đủ 6 phân hệ:
+> - **Tab 1: 🔍 Kiểm Tra Tin Tức AI**: Dán URL Facebook/Báo chí, trích xuất lượt like/share/cmt, phân loại PhoBERT, tính chỉ số bất định MC Dropout & Entropy OOD, giải thích từ khóa (XAI).
+> - **Tab 2: 📁 Phân Tích Hàng Loạt (Batch CSV/Excel)**: Quét và gắn nhãn hàng loạt hàng trăm bài viết, xuất file `.csv`.
+> - **Tab 3: ⚖️ So Sánh Hai Bài Viết**: Đối chiếu 2 bài viết đo độ tương đồng ngữ nghĩa và phát hiện mâu thuẫn.
+> - **Tab 4: 🕒 Lịch Sử Kiểm Tra**: Tìm kiếm, lọc và xuất dữ liệu lịch sử vào SQLite.
+> - **Tab 5: 💬 Chatbot AI**: Trợ lý ảo tư vấn phòng chống tin giả và kiến trúc PhoBERT.
+> - **Tab 6: 📊 Admin & Nghiên Cứu Học Sâu**: Xem thống kê thời gian thực, quản lý phản hồi khiếu nại, biểu đồ Loss/F1 và ma trận nhầm lẫn.
+
+---
+
+### 2. Huấn luyện Mô hình AI (Fine-tuning PhoBERT trên GPU)
+Tận dụng nhân Tensor Cores trên GPU (như NVIDIA GeForce RTX 3050 Laptop) với Mixed Precision FP16, chỉ mất **2 đến 4 phút**:
+```bash
+python src/train.py
+```
+*(Hoặc chạy nhanh 2 epoch để kiểm tra nhanh trong hơn 1 phút: `python src/train.py --epochs 2`)*
+
+---
+
+### 3. Tiền xử lý & Làm sạch dữ liệu
+Chuẩn hóa mã hóa ký tự đặc biệt (chữ in đậm Toán học trên Facebook `𝐍𝐆𝐎̣𝐂 𝐌𝐈𝐍𝐇` $\to$ `NGỌC MINH`), dịch teencode và tách từ tiếng Việt:
+```bash
+python src/preprocess.py
+```
+
+---
+
+### 4. Huấn luyện các mô hình Baseline so sánh
+Huấn luyện các mô hình truyền thống (TF-IDF + Naive Bayes, Logistic Regression, SVM) để đối chiếu chứng minh ưu thế của Deep Learning:
+```bash
+python src/baseline.py
+```
+
+---
+
+### 5. Đánh giá Mô hình & Xuất Biểu đồ Báo cáo
+Chạy thực nghiệm bóc tách thành phần (Ablation Study) và xuất đồ thị biểu diễn ma trận nhầm lẫn:
+```bash
+python src/ablation_and_metrics.py
+python src/model_comparison.py
+```
+*(Kết quả biểu đồ được tự động lưu vào thư mục `outputs/`)*
+
+---
+
+### 6. Kiểm thử tự động toàn diện (Unit Tests)
+Chạy tự động 14 bài kiểm tra các hàm xử lý chuỗi, clickbait, MC Dropout và Database:
+```bash
+python -m unittest discover tests
+```
+
+---
+
+### 7. Chạy Tự động Trọn gói 1-Click (Treo máy)
+Tự động làm sạch dữ liệu $\to$ đo đạc số liệu $\to$ khởi động luôn hệ thống Web:
+```bash
+python run_all.py
+```
+
+---
+
+### 8. Giải phóng cổng khi bị kẹt (Windows)
+Đóng các tiến trình Python chạy ngầm nếu gặp thông báo "Cổng 7860 đang bận":
+```cmd
+taskkill /F /IM python.exe
+```
+
+---
+
+### 📁 Bộ công cụ 1-Click (File `.bat` có sẵn trong thư mục gốc)
+Người dùng chỉ cần nhấp đúp chuột để chạy mà không cần gõ lệnh:
+- `1_UP_CODE_LEN_GITHUB.bat`: Đẩy code lên GitHub.
+- `2_CHAY_WEB_CHIA_SE_CONG_KHAI.bat`: Bật web kèm link công khai gửi người khác.
+- `3_CHAY_WEB_NOI_BO.bat`: Mở web chạy nội bộ.
+- `4_HUAN_LUYEN_PHOBERT.bat`: Huấn luyện mô hình PhoBERT.
+- `5_DANH_GIA_VA_XUAT_BIEU_DO.bat`: Xuất đồ thị và bảng so sánh báo cáo.
+- `6_TAT_TIEN_TRINH_BI_KET.bat`: Giải phóng cổng bị kẹt.
