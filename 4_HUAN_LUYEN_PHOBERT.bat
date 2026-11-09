@@ -6,3 +6,4 @@ echo  (Đã tối ưu bộ nhớ 4GB VRAM - Hoàn thành sau khoảng 2 đến 4
 echo ========================================================================
 python src/train.py
 pause
+
