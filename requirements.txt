@@ -1,0 +1,26 @@
+# Core Deep Learning & NLP
+torch>=2.0.0
+transformers>=4.36.0
+datasets>=2.16.0
+accelerate>=0.26.0
+evaluate>=0.4.0
+
+# Machine Learning & Data Processing
+scikit-learn>=1.3.0
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Vietnamese Text Processing & Social Media
+underthesea>=6.8.0
+emoji>=2.10.0
+
+# Visualization & Experiment Tracking
+matplotlib>=3.8.0
+seaborn>=0.13.0
+
+# Demo & Deployment
+gradio>=4.19.0
+fastapi>=0.109.0
+uvicorn>=0.27.0
+pydantic>=2.5.0
+

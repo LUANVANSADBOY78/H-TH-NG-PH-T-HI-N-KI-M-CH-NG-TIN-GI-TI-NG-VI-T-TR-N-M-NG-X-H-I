@@ -1,0 +1,22 @@
+<USER_REQUEST>
+hãy thêm data cho tôi 
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-11-02T14:22:08+07:00.
+
+The user's current state is as follows:
+Active Document: d:\doanhocsau\src\ablation_and_metrics.py (LANGUAGE_UNSPECIFIED)
+Cursor is on line: 1
+Other open documents:
+- d:\doanhocsau\src\fact_checker.py (LANGUAGE_UNSPECIFIED)
+- d:\doanhocsau\tests\test_prediction.py (LANGUAGE_UNSPECIFIED)
+- d:\doanhocsau\main.py (LANGUAGE_UNSPECIFIED)
+- d:\doanhocsau\src\batch_analyzer.py (LANGUAGE_UNSPECIFIED)
+- d:\doanhocsau\src\chatbot\__init__.py (LANGUAGE_UNSPECIFIED)
+
+The user has uploaded 1 image(s):
+- C:/Users/ASUS/.gemini/antigravity/brain/fd8d1a54-b05b-4a77-8648-5e9a85e49737/.user_uploaded/media_1793604066985_f7cbbf5c.png
+You can embed this image in an artifact if you need the USER to review it.
+</ADDITIONAL_METADATA>
+
+[file "C:/Users/ASUS/.gemini/antigravity/brain/fd8d1a54-b05b-4a77-8648-5e9a85e49737/.user_uploaded/media_1793604040374_d201fd7e.zip" (uploaded as "ViFN-Vietnamese_Fake_New_Datasets_Ver3-main.zip") was omitted because its type "application/zip" is unsupported by the model; read it from that path if needed]
