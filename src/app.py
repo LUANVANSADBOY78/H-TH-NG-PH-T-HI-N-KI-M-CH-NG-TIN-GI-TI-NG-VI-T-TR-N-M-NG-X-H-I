@@ -802,9 +802,17 @@ if __name__ == "__main__":
     server_host = "0.0.0.0" if is_share else "127.0.0.1"
     try:
         app.launch(server_name=server_host, server_port=7860, share=is_share, css=CUSTOM_CSS, prevent_thread_lock=True)
-    except OSError:
-        print("⚠️ Cổng 7860 đang bận, tự động tìm và chuyển sang cổng trống khả dụng...")
-        app.launch(server_name=server_host, share=is_share, css=CUSTOM_CSS, prevent_thread_lock=True)
+    except Exception as e:
+        if is_share:
+            print("\n⚠️ CẢNH BÁO: Windows Defender / Tường lửa đã chặn cổng tạo link công khai gradio.live.")
+            print("➡️ Đang tự động chuyển sang chế độ Web Nội Bộ (Localhost) để đảm bảo TREO MÁY LIÊN TỤC 8H...")
+            try:
+                app.launch(server_name="0.0.0.0", server_port=7860, share=False, css=CUSTOM_CSS, prevent_thread_lock=True)
+            except Exception:
+                app.launch(server_name="127.0.0.1", share=False, css=CUSTOM_CSS, prevent_thread_lock=True)
+        else:
+            print("⚠️ Cổng 7860 đang bận, tự động tìm và chuyển sang cổng trống khả dụng...")
+            app.launch(server_name=server_host, share=False, css=CUSTOM_CSS, prevent_thread_lock=True)
     
     import time
     try:
