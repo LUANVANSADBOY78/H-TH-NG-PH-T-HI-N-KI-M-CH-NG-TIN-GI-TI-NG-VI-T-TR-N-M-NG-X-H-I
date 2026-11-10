@@ -791,32 +791,71 @@ def build_full_application():
 
     return app
 
+def start_cloudflare_tunnel(port=7860):
+    """Khởi chạy Cloudflare Tunnel chính thức để tạo link công khai tốc độ cao không bị Windows Defender chặn."""
+    import subprocess
+    import re
+    import time
+    cf_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "cloudflared.exe")
+    if not os.path.exists(cf_path):
+        cf_path = "cloudflared.exe"
+    if not os.path.exists(cf_path):
+        return None
+    try:
+        proc = subprocess.Popen(
+            [cf_path, "tunnel", "--url", f"http://127.0.0.1:{port}"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
+        )
+        url = None
+        start = time.time()
+        while time.time() - start < 15:
+            line = proc.stderr.readline()
+            if not line:
+                continue
+            m = re.search(r"https://[a-zA-Z0-9-]+\.trycloudflare\.com", line)
+            if m:
+                url = m.group(0)
+                break
+        return proc, url
+    except Exception:
+        return None
+
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="Chạy ứng dụng Kiểm chứng Tin giả Tiếng Việt")
-    parser.add_argument("--share", action="store_true", help="Tạo link công khai trực tuyến (gradio.live) để gửi cho thầy cô / bạn bè truy cập từ xa")
+    parser.add_argument("--share", action="store_true", help="Tạo link công khai trực tuyến để gửi cho thầy cô / bạn bè truy cập từ xa")
     cli_args, _ = parser.parse_known_args()
     is_share = cli_args.share
 
     app = build_full_application()
-    server_host = "0.0.0.0" if is_share else "127.0.0.1"
+    active_port = 7860
     try:
-        app.launch(server_name=server_host, server_port=7860, share=is_share, css=CUSTOM_CSS, prevent_thread_lock=True)
-    except Exception as e:
-        if is_share:
-            print("\n⚠️ CẢNH BÁO: Windows Defender / Tường lửa đã chặn cổng tạo link công khai gradio.live.")
-            print("➡️ Đang tự động chuyển sang chế độ Web Nội Bộ (Localhost) để đảm bảo TREO MÁY LIÊN TỤC 8H...")
-            try:
-                app.launch(server_name="0.0.0.0", server_port=7860, share=False, css=CUSTOM_CSS, prevent_thread_lock=True)
-            except Exception:
-                app.launch(server_name="127.0.0.1", share=False, css=CUSTOM_CSS, prevent_thread_lock=True)
+        app.launch(server_name="127.0.0.1", server_port=7860, share=False, css=CUSTOM_CSS, prevent_thread_lock=True)
+    except OSError:
+        print("⚠️ Cổng 7860 đang bận, tự động chuyển sang cổng trống khả dụng...")
+        app.launch(server_name="127.0.0.1", share=False, css=CUSTOM_CSS, prevent_thread_lock=True)
+        active_port = 7861
+
+    cf_proc = None
+    if is_share:
+        print("\n[*] Đang khởi tạo đường truyền bảo mật Cloudflare Tunnel...")
+        cf_res = start_cloudflare_tunnel(active_port)
+        if cf_res and cf_res[1]:
+            cf_proc, public_url = cf_res
+            print("\n" + "=" * 78)
+            print("🎉 ĐÃ TẠO THÀNH CÔNG ĐƯỜNG LINK CHIA SẺ CÔNG KHAI:")
+            print(f"🌐 LINK CỦA BẠN: {public_url}")
+            print("👉 (Bất kỳ ai trên điện thoại hoặc máy tính khác đều truy cập trực tiếp được!)")
+            print("=" * 78 + "\n")
         else:
-            print("⚠️ Cổng 7860 đang bận, tự động tìm và chuyển sang cổng trống khả dụng...")
-            app.launch(server_name=server_host, share=False, css=CUSTOM_CSS, prevent_thread_lock=True)
-    
+            print("⚠️ Không thể tạo link Cloudflare, tiếp tục duy trì máy chủ nội bộ.")
+
     import time
     try:
         while True:
             time.sleep(3600)
     except (KeyboardInterrupt, SystemExit):
-        pass
+        if cf_proc:
+            cf_proc.terminate()

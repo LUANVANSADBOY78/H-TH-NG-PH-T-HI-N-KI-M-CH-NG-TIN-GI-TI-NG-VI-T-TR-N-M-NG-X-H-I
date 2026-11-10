@@ -6,6 +6,8 @@ __pycache__/
 .Python
 
 # Large Model Checkpoints & Weights (> 100MB rejected by GitHub)
+# Large binaries & tools
+cloudflared.exe
 outputs/
 *.safetensors
 *.bin
