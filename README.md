@@ -1,85 +1,63 @@
 # 🛡️ Hệ Thống Phát Hiện & Kiểm Chứng Tin Giả Tiếng Việt Trên Mạng Xã Hội Bằng Mô Hình Transformer (PhoBERT) & Chatbot AI
 
-> **Đề tài Đồ án Tốt nghiệp / Nghiên cứu Khoa học Môn Học Sâu (Deep Learning)**:  
-> *"Xây dựng hệ thống phát hiện và hỗ trợ kiểm chứng tin giả tiếng Việt trên mạng xã hội sử dụng mô hình Transformer (PhoBERT), tích hợp Chatbot AI."*
+> **Đề tài Đồ án Môn Học Sâu (Deep Learning)**:  
+> *"Nghiên cứu và xây dựng hệ thống phát hiện tin giả tiếng Việt trên mạng xã hội sử dụng mô hình Transformer (PhoBERT-base-v2) thuần văn bản và giải thích AI (XAI)."*
 
 ---
 
-## 📌 Bảng Tổng Hợp Tính Năng Đồ Án (45+ Chức Năng Hoàn Chỉnh)
+## 📌 Bảng Tổng Hợp Kết Quả Thực Nghiệm Thực Tế (Test Set N=390)
 
-| Nhóm Phân Hệ | Danh Sách Chức Năng Chi Tiết | Trạng Thái | File Module Phụ Trách |
-| :--- | :--- | :---: | :--- |
-| **1. Người Dùng (User Portal)** | 1. Phân loại tin tức bằng PhoBERT (Transformer Encoder) | ✅ | [`src/models.py`](file:///d:/doanhocsau/src/models.py), [`src/app.py`](file:///d:/doanhocsau/src/app.py) |
-| | 2. Quy chuẩn 3 nhãn Fact-checking: Supported, Refuted, NEI | ✅ | [`src/fact_checker.py`](file:///d:/doanhocsau/src/fact_checker.py) |
-| | 3. Trích xuất tự động Tiêu đề & Nội dung từ đường dẫn URL | ✅ | [`src/url_extractor.py`](file:///d:/doanhocsau/src/url_extractor.py) |
-| | 4. Kiểm tra bất nhất Tiêu đề vs Thân bài (Clickbait check) | ✅ | [`src/advanced_nlp.py`](file:///d:/doanhocsau/src/advanced_nlp.py) |
-| | 5. Xử lý bài viết dài bằng cơ chế Chunking & Aggregation | ✅ | [`src/advanced_nlp.py`](file:///d:/doanhocsau/src/advanced_nlp.py) |
-| | 6. Đối chiếu kho bằng chứng đã xác minh (Evidence Retrieval) | ✅ | [`src/fact_checker.py`](file:///d:/doanhocsau/src/fact_checker.py) |
-| | 7. Giải thích mô hình (XAI) - Tô màu từ khóa có trọng số cao | ✅ | [`src/explainer.py`](file:///d:/doanhocsau/src/explainer.py) |
-| | 8. Báo cáo phản hồi khiếu nại nếu AI dự đoán sai | ✅ | [`src/database.py`](file:///d:/doanhocsau/src/database.py) |
-| **2. Phân Tích Hàng Loạt (Batch)** | 9. Tải file CSV / Excel chứa hàng trăm bài viết | ✅ | [`src/batch_analyzer.py`](file:///d:/doanhocsau/src/batch_analyzer.py) |
-| | 10. Quét tự động, gắn nhãn, tính độ rủi ro hàng loạt | ✅ | [`src/batch_analyzer.py`](file:///d:/doanhocsau/src/batch_analyzer.py) |
-| | 11. Xem trước bảng kết quả & tải file kết quả `.csv` về máy | ✅ | [`src/app.py`](file:///d:/doanhocsau/src/app.py) |
-| **3. Đối Chiếu 2 Bài Viết** | 12. Đo độ tương đồng ngữ nghĩa giữa Bài A và Bài B | ✅ | [`src/advanced_nlp.py`](file:///d:/doanhocsau/src/advanced_nlp.py) |
-| | 13. Tìm kiếm các từ khóa chung và phát hiện mâu thuẫn | ✅ | [`src/advanced_nlp.py`](file:///d:/doanhocsau/src/advanced_nlp.py) |
-| **4. Lịch Sử & Cơ Sở Dữ Liệu** | 14. Lưu trữ lịch sử vào SQLite Database | ✅ | [`src/database.py`](file:///d:/doanhocsau/src/database.py) |
-| | 15. Tìm kiếm lịch sử theo từ khóa, lọc theo nguồn tin | ✅ | [`src/database.py`](file:///d:/doanhocsau/src/database.py) |
-| | 16. Xóa lịch sử kiểm tra | ✅ | [`src/database.py`](file:///d:/doanhocsau/src/database.py) |
-| **5. Chatbot AI Tư Vấn** | 17. Giải thích khái niệm tin giả (Mis/Dis/Mal-information) | ✅ | [`src/chatbot.py`](file:///d:/doanhocsau/src/chatbot.py) |
-| | 18. Hướng dẫn quy trình 5 bước kiểm chứng nguồn tin MXH | ✅ | [`src/chatbot.py`](file:///d:/doanhocsau/src/chatbot.py) |
-| | 19. Giải thích cơ chế Attention của PhoBERT & độ tin cậy | ✅ | [`src/chatbot.py`](file:///d:/doanhocsau/src/chatbot.py) |
-| | 20. Cung cấp danh bạ các báo chí chính thống uy tín tại VN | ✅ | [`src/chatbot.py`](file:///d:/doanhocsau/src/chatbot.py) |
-| **6. Học Sâu Chuyên Sâu (Deep Learning)** | 21. Kiến trúc BiLSTM với Attention Mechanism | ✅ | [`src/deep_learning_models.py`](file:///d:/doanhocsau/src/deep_learning_models.py) |
-| | 22. Kiến trúc Mạng nơ-ron tích chập TextCNN | ✅ | [`src/deep_learning_models.py`](file:///d:/doanhocsau/src/deep_learning_models.py) |
-| | 23. Mô hình LSTM 1 chiều tiêu chuẩn | ✅ | [`src/deep_learning_models.py`](file:///d:/doanhocsau/src/deep_learning_models.py) |
-| | 24. Mô hình Đa đặc trưng PhoBERT + Metadata MLP | ✅ | [`src/models.py`](file:///d:/doanhocsau/src/models.py) |
-| | 25. Ước lượng độ không chắc chắn (Monte Carlo Dropout) | ✅ | [`src/deep_learning_models.py`](file:///d:/doanhocsau/src/deep_learning_models.py) |
-| | 26. Phát hiện dữ liệu ngoài phân phối (OOD Detection) | ✅ | [`src/advanced_nlp.py`](file:///d:/doanhocsau/src/advanced_nlp.py) |
-| | 27. Phân tích cảm xúc & độ kích động (Sensationalism Score) | ✅ | [`src/advanced_nlp.py`](file:///d:/doanhocsau/src/advanced_nlp.py) |
-| | 28. Xử lý mất cân bằng dữ liệu bằng Focal Loss | ✅ | [`src/models.py`](file:///d:/doanhocsau/src/models.py) |
-| **7. Quản Trị & Thực Nghiệm (Admin)** | 29. Dashboard số liệu KPI thời gian thực | ✅ | [`src/app.py`](file:///d:/doanhocsau/src/app.py) |
-| | 30. Quản lý danh sách phản hồi khiếu nại của người dùng | ✅ | [`src/database.py`](file:///d:/doanhocsau/src/database.py) |
-| | 31. Quản lý và thêm bằng chứng kiểm chứng mới vào kho DB | ✅ | [`src/database.py`](file:///d:/doanhocsau/src/database.py) |
-| | 32. Vẽ biểu đồ Training/Validation Loss qua các Epoch | ✅ | [`src/ablation_and_metrics.py`](file:///d:/doanhocsau/src/ablation_and_metrics.py) |
-| | 33. Vẽ đồ thị Ma trận nhầm lẫn (Confusion Matrix Plot) | ✅ | [`src/ablation_and_metrics.py`](file:///d:/doanhocsau/src/ablation_and_metrics.py) |
-| | 34. Báo cáo nghiên cứu bóc tách thành phần (Ablation Study) | ✅ | [`src/ablation_and_metrics.py`](file:///d:/doanhocsau/src/ablation_and_metrics.py) |
-| | 35. So sánh thực nghiệm PhoBERT vs BiLSTM, TextCNN, SVM, LR | ✅ | [`src/model_comparison.py`](file:///d:/doanhocsau/src/model_comparison.py) |
-| | 36. Xuất toàn bộ lịch sử ra file CSV (`history_export.csv`) | ✅ | [`src/app.py`](file:///d:/doanhocsau/src/app.py) |
+Toàn bộ các số liệu dưới đây được sinh tự động từ thực nghiệm thật và lưu tại `outputs/evaluation/test_metrics.json` và `outputs/evaluation/baseline_metrics.json`:
+
+| Nhóm Mô Hình | Tên Mô Hình Thực Nghiệm | Accuracy | Macro F1 | Precision | Recall | Ghi Chú |
+| :--- | :--- | :---: | :---: | :---: | :---: | :--- |
+| **Baseline Đa số** | Predict All Real (Đoán toàn bộ thật) | 68.97% | 0.4082 | 0.3449 | 0.5000 | Phân bố Test (269/121) |
+| **Truyền thống** | Multinomial Naive Bayes (TF-IDF) | 86.92% | 0.8291 | 0.8946 | 0.8006 | Thực nghiệm Test Set |
+| | Logistic Regression (TF-IDF) | 87.69% | 0.8593 | 0.8526 | 0.8676 | Thực nghiệm Test Set |
+| | Random Forest (TF-IDF) | 88.97% | 0.8657 | 0.8851 | 0.8519 | Thực nghiệm Test Set |
+| | Linear SVM (TF-IDF) | 90.00% | 0.8801 | 0.8917 | 0.8707 | Thực nghiệm Test Set |
+| **Deep Learning** | **PhoBERT-base-v2 (Thuần Văn Bản)** | **94.62%** | **0.9354** | **0.9487** | **0.9246** | **Checkpoint RTX 3050** |
+
+- **Ma trận Nhầm lẫn (Confusion Matrix):**
+  $$\begin{bmatrix} 264 & 5 \\ 16 & 105 \end{bmatrix}$$
+  - Hàng 0 (Tin Thật): $264 + 5 = 269$ mẫu (Recall 98.14%)
+  - Hàng 1 (Tin Giả ): $16 + 105 = 121$ mẫu (Recall 86.78%, Precision 95.45%)
+  - Tổng hàng khớp $100\%$ phân bố ground truth của tập kiểm thử.
+- **ROC-AUC Score:** **0.9843**.
+- **Độ vững chắc khi che tên báo & URL:** F1 chỉ biến thiên **-0.26%**, chứng minh mô hình hiểu ngữ nghĩa văn bản.
 
 ---
 
 ## 📁 Cấu Trúc Toàn Bộ Dự Án
 
 ```text
-d:\doanhocsau/
-├── requirements.txt            # Danh mục thư viện Python
+├── config.py                   # Cấu hình tập trung (Đường dẫn, Max length, Class weights, Bảo mật)
+├── requirements.txt            # Danh mục thư viện Python đã ghim phiên bản chuẩn
 ├── README.md                   # Tài liệu hướng dẫn đồ án
 ├── data/
-│   ├── create_sample_data.py   # Script tạo tập dữ liệu mẫu benchmark
 │   ├── fake_news_system.db     # SQLite Database lưu Lịch sử, Bằng chứng, Phản hồi
-│   ├── raw/data.csv            # Dữ liệu mạng xã hội thô
-│   └── processed/              # train.csv, val.csv, test.csv đã tách từ
+│   ├── raw/data.csv            # Dữ liệu tổng hợp thô
+│   └── processed/              # train.csv, val.csv, test.csv đã tiền xử lý sạch
 ├── notebooks/
-│   └── 01_eda.py               # Phân tích khám phá dữ liệu (EDA)
+│   └── Huan_Luyen_PhoBERT_Colab.ipynb # Notebook huấn luyện trên Google Colab T4 miễn phí
 ├── outputs/                    # Checkpoint PhoBERT, ảnh biểu đồ, file export CSV
-│   ├── training_curves.png     # Đồ thị Training/Val Loss & F1 qua từng epoch
-│   └── confusion_matrix.png    # Ma trận nhầm lẫn trực quan hóa
+│   ├── phobert/best/           # Checkpoint mô hình Transformer tốt nhất
+│   ├── phobert/training_history.json # Lịch sử hàm mất mát qua từng epoch
+│   └── evaluation/             # test_metrics.json, confusion_matrix.png, error_analysis.csv
 └── src/
     ├── __init__.py
-    ├── preprocess.py           # Chuẩn hóa Unicode NFC, teencode, tách từ Underthesea
+    ├── dataset/
+    │   └── build_complete_dataset.py # Xây dựng dữ liệu sạch thuần văn bản (không rò rỉ metadata)
     ├── baseline.py             # TF-IDF + Logistic Regression, SVM, Naive Bayes, Random Forest
-    ├── models.py               # PhoBERT + Metadata MLP + Focal Loss
-    ├── deep_learning_models.py # Các kiến trúc BiLSTM, LSTM, TextCNN, MC Dropout
-    ├── advanced_nlp.py         # Chunking bài dài, OOD Detection, So sánh 2 bài, Clickbait check
-    ├── batch_analyzer.py       # Quét phân tích hàng loạt file CSV / Excel
-    ├── ablation_and_metrics.py # Vẽ biểu đồ Loss/F1, Confusion Matrix, Bảng Ablation
-    ├── train.py                # Pipeline huấn luyện PhoBERT (Hugging Face Trainer)
-    ├── evaluate.py             # Đánh giá tập test & Error Analysis
+    ├── train.py                # Pipeline huấn luyện PhoBERT (Weighted Cross-Entropy Loss)
+    ├── evaluate.py             # Đánh giá tập test 1 lần duy nhất & xuất file JSON/CSV/PNG
+    ├── cross_domain_eval.py    # Đánh giá chéo nguồn (Domain Shift) & Che tên báo/URL
+    ├── ablation_and_metrics.py # Sinh biểu đồ Loss/F1, Confusion Matrix, Bảng Ablation từ JSON
+    ├── model_comparison.py     # Bảng tổng hợp so sánh thực nghiệm động từ JSON
     ├── url_extractor.py        # Cào & trích xuất nội dung từ đường dẫn URL bài báo
-    ├── fact_checker.py         # Engine đối chiếu bằng chứng & chuẩn 3 nhãn Fact-checking
+    ├── fact_checker.py         # Engine đối chiếu bằng chứng
     ├── explainer.py            # Giải thích mô hình AI (XAI) & tô màu từ khóa
     ├── chatbot.py              # Trợ lý ảo Chatbot AI tư vấn và hướng dẫn kiểm chứng
-    ├── model_comparison.py     # Bảng tổng hợp so sánh thực nghiệm các mô hình
     └── app.py                  # Giao diện Web Gradio 6 Phân hệ Toàn diện
 ```
 
@@ -87,89 +65,68 @@ d:\doanhocsau/
 
 ## 🚀 Hướng Dẫn Sử Dụng & Toàn Bộ Câu Lệnh Khởi Chạy
 
-### 1. Khởi chạy Giao diện Web & Tạo Link Chia Sẻ Công Khai (Public Link)
-- **Tạo link trực tuyến (gradio.live) để gửi cho thầy cô / bạn bè dùng từ xa (trên điện thoại hoặc máy khác):**
-```bash
-python src/app.py --share
-```
-- **Chạy Web nội bộ (chỉ riêng trên máy cá nhân):**
+### 1. Khởi chạy Giao diện Web (Gradio)
+- **Chạy Web nội bộ:**
 ```bash
 python src/app.py
 ```
+- **Tạo link chia sẻ công khai (Cloudflare Tunnel an toàn):**
+```bash
+python src/app.py --share
+```
 > Mở trình duyệt tại: **`http://127.0.0.1:7860`** để trải nghiệm đầy đủ 6 phân hệ:
-> - **Tab 1: 🔍 Kiểm Tra Tin Tức AI**: Dán URL Facebook/Báo chí, trích xuất lượt like/share/cmt, phân loại PhoBERT, tính chỉ số bất định MC Dropout & Entropy OOD, giải thích từ khóa (XAI).
-> - **Tab 2: 📁 Phân Tích Hàng Loạt (Batch CSV/Excel)**: Quét và gắn nhãn hàng loạt hàng trăm bài viết, xuất file `.csv`.
+> - **Tab 1: 🔍 Kiểm Tra Tin Tức AI**: Dán URL Báo chí hoặc dán văn bản, phân loại PhoBERT, tính chỉ số bất định MC Dropout & Entropy OOD, giải thích từ khóa (XAI).
+> - **Tab 2: 📁 Phân Tích Hàng Loạt (Batch CSV/Excel)**: Gắn nhãn hàng loạt hàng trăm bài viết, xuất file `.csv`.
 > - **Tab 3: ⚖️ So Sánh Hai Bài Viết**: Đối chiếu 2 bài viết đo độ tương đồng ngữ nghĩa và phát hiện mâu thuẫn.
 > - **Tab 4: 🕒 Lịch Sử Kiểm Tra**: Tìm kiếm, lọc và xuất dữ liệu lịch sử vào SQLite.
-> - **Tab 5: 💬 Chatbot AI**: Trợ lý ảo tư vấn phòng chống tin giả và kiến trúc PhoBERT.
-> - **Tab 6: 📊 Admin & Nghiên Cứu Học Sâu**: Xem thống kê thời gian thực, quản lý phản hồi khiếu nại, biểu đồ Loss/F1 và ma trận nhầm lẫn.
+> - **Tab 5: 💬 Chatbot AI**: Trợ lý ảo tư vấn phòng chống tin giả.
+> - **Tab 6: 📊 Admin & Nghiên Cứu Học Sâu**: Xem thống kê thời gian thực, biểu đồ Loss/F1 thật và ma trận nhầm lẫn thật.
 
 ---
 
 ### 2. Huấn luyện Mô hình AI (Fine-tuning PhoBERT trên GPU)
-Tận dụng nhân Tensor Cores trên GPU (như NVIDIA GeForce RTX 3050 Laptop) với Mixed Precision FP16, chỉ mất **2 đến 4 phút**:
+Tận dụng GPU máy tính hoặc Google Colab với Mixed Precision FP16:
 ```bash
-python src/train.py
-```
-*(Hoặc chạy nhanh 2 epoch để kiểm tra nhanh trong hơn 1 phút: `python src/train.py --epochs 2`)*
-
----
-
-### 3. Tiền xử lý & Làm sạch dữ liệu
-Chuẩn hóa mã hóa ký tự đặc biệt (chữ in đậm Toán học trên Facebook `𝐍𝐆𝐎̣𝐂 𝐌𝐈𝐍𝐇` $\to$ `NGỌC MINH`), dịch teencode và tách từ tiếng Việt:
-```bash
-python src/preprocess.py
+python src/train.py --epochs 3 --batch_size 8 --learning_rate 2e-5
 ```
 
 ---
 
-### 4. Huấn luyện các mô hình Baseline so sánh
-Huấn luyện các mô hình truyền thống (TF-IDF + Naive Bayes, Logistic Regression, SVM) để đối chiếu chứng minh ưu thế của Deep Learning:
+### 3. Đánh giá Mô hình trên Tập Test (Xuất file JSON/PNG thật)
+```bash
+python src/evaluate.py
+```
+
+---
+
+### 4. Đánh giá Chéo Nguồn & Che Tên Báo / URL
+```bash
+python src/cross_domain_eval.py
+```
+
+---
+
+### 5. Huấn luyện & Đánh giá các mô hình Baseline
 ```bash
 python src/baseline.py
 ```
 
 ---
 
-### 5. Đánh giá Mô hình & Xuất Biểu đồ Báo cáo
-Chạy thực nghiệm bóc tách thành phần (Ablation Study) và xuất đồ thị biểu diễn ma trận nhầm lẫn:
-```bash
-python src/ablation_and_metrics.py
-python src/model_comparison.py
-```
-*(Kết quả biểu đồ được tự động lưu vào thư mục `outputs/`)*
-
----
-
-### 6. Kiểm thử tự động toàn diện (Unit Tests)
-Chạy tự động 14 bài kiểm tra các hàm xử lý chuỗi, clickbait, MC Dropout và Database:
-```bash
-python -m unittest discover tests
-```
-
----
-
-### 7. Chạy Tự động Trọn gói 1-Click (Treo máy)
-Tự động làm sạch dữ liệu $\to$ đo đạc số liệu $\to$ khởi động luôn hệ thống Web:
-```bash
-python run_all.py
-```
-
----
-
-### 8. Giải phóng cổng khi bị kẹt (Windows)
-Đóng các tiến trình Python chạy ngầm nếu gặp thông báo "Cổng 7860 đang bận":
+### 6. Đóng tiến trình an toàn khi bị kẹt cổng (Windows)
+Sử dụng script đóng theo PID an toàn (không gây ảnh hưởng các tiến trình Python khác):
+- Chạy file: `6_TAT_TIEN_TRINH_BI_KET.bat`
+- Hoặc đóng thủ công theo cổng:
 ```cmd
-taskkill /F /IM python.exe
+for /f "tokens=5" %a in ('netstat -aon ^| findstr :7860 ^| findstr LISTENING') do taskkill /F /PID %a
 ```
 
 ---
 
-### 📁 Bộ công cụ 1-Click (File `.bat` có sẵn trong thư mục gốc)
-Người dùng chỉ cần nhấp đúp chuột để chạy mà không cần gõ lệnh:
+### 📁 Bộ công cụ 1-Click (File `.bat`)
 - `1_UP_CODE_LEN_GITHUB.bat`: Đẩy code lên GitHub.
-- `2_CHAY_WEB_CHIA_SE_CONG_KHAI.bat`: Bật web kèm link công khai gửi người khác.
+- `2_CHAY_WEB_CHIA_SE_CONG_KHAI.bat`: Bật web kèm link công khai.
 - `3_CHAY_WEB_NOI_BO.bat`: Mở web chạy nội bộ.
 - `4_HUAN_LUYEN_PHOBERT.bat`: Huấn luyện mô hình PhoBERT.
 - `5_DANH_GIA_VA_XUAT_BIEU_DO.bat`: Xuất đồ thị và bảng so sánh báo cáo.
-- `6_TAT_TIEN_TRINH_BI_KET.bat`: Giải phóng cổng bị kẹt.
+- `6_TAT_TIEN_TRINH_BI_KET.bat`: Đóng server an toàn theo PID và giải phóng cổng.

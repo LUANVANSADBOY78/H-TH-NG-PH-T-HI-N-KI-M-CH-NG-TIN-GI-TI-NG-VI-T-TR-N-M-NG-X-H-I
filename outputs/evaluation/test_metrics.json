@@ -1,0 +1,50 @@
+{
+  "model_name": "PhoBERT-base-v2 (Thuần Văn Bản)",
+  "total_test_samples": 390,
+  "class_distribution": {
+    "real_class_0": 269,
+    "fake_class_1": 121
+  },
+  "majority_baseline_accuracy": 0.689744,
+  "metrics": {
+    "accuracy": 0.9462,
+    "macro_f1": 0.9354,
+    "macro_precision": 0.9487,
+    "macro_recall": 0.9246,
+    "roc_auc": 0.9843
+  },
+  "per_class": {
+    "real": {
+      "precision": 0.9429,
+      "recall": 0.9814,
+      "f1": 0.9617,
+      "support": 269
+    },
+    "fake": {
+      "precision": 0.9545,
+      "recall": 0.8678,
+      "f1": 0.9091,
+      "support": 121
+    }
+  },
+  "confusion_matrix": {
+    "matrix": [
+      [
+        264,
+        5
+      ],
+      [
+        16,
+        105
+      ]
+    ],
+    "true_negative_real_correct": 264,
+    "false_positive_real_as_fake": 5,
+    "false_negative_fake_missed": 16,
+    "true_positive_fake_correct": 105,
+    "row_sums_check": [
+      269,
+      121
+    ]
+  }
+}

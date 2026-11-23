@@ -1,0 +1,4 @@
+﻿id,text,Dự_đoán_AI,Độ_tin_cậy,Mức_độ_rủi_ro,Dấu_hiệu_phát_hiện
+1,Bộ Y tế khuyến cáo tiêm vắc xin phòng chống dịch cúm mùa,🟢 XÁC THỰC: TIN THẬT (TRÙNG KHỚP BẰNG CHỨNG CHÍNH THỐNG),92.0%,🟡 CHƯA XÁC MINH (NEI),"bộ y tế, khuyến cáo"
+2,Ăn tỏi sống có thể tiêu diệt hoàn toàn tế bào ung thư sau 24 giờ,🔴 CẢNH BÁO: TIN GIẢ (BỊ BÁC BỎ BỞI BẰNG CHỨNG XÁC THỰC),92.0%,🟡 CHƯA XÁC MINH (NEI),
+3,Bộ Giáo dục công bố lịch thi tốt nghiệp trung học phổ thông quốc gia,🟢 XÁC THỰC: TIN THẬT (TRÙNG KHỚP BẰNG CHỨNG CHÍNH THỐNG),92.0%,🟡 CHƯA XÁC MINH (NEI),"bộ giáo dục, công bố"

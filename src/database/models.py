@@ -111,21 +111,23 @@ def init_tables():
 
     conn.commit()
 
-    # Nạp tài khoản Admin và Researcher mặc định nếu chưa có
+    # Khởi tạo tài khoản quản trị viên nếu chưa tồn tại
     cursor.execute("SELECT COUNT(*) FROM users")
     if cursor.fetchone()[0] == 0:
         import hashlib
-        # Password mặc định cho tài khoản admin là 'admin123'
-        pwd_admin = hashlib.sha256("admin123".encode()).hexdigest()
-        pwd_user = hashlib.sha256("user123".encode()).hexdigest()
+        try:
+            from config import DEFAULT_ADMIN_USER, DEFAULT_ADMIN_PASS
+        except Exception:
+            DEFAULT_ADMIN_USER = "admin"
+            DEFAULT_ADMIN_PASS = "AdminSecurePass@2026"
+            
+        pwd_admin = hashlib.sha256(DEFAULT_ADMIN_PASS.encode()).hexdigest()
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         cursor.execute("""
         INSERT INTO users (username, password_hash, full_name, email, role, status, created_at)
         VALUES 
-        ('admin', ?, 'Quản Trị Viên Hệ Thống', 'admin@fakenews.vn', 'admin', 'active', ?),
-        ('nghiencuu', ?, 'Nghiên Cứu Viên AI', 'researcher@fakenews.vn', 'researcher', 'active', ?),
-        ('user', ?, 'Người Dùng Kiểm Thử', 'user@fakenews.vn', 'user', 'active', ?)
-        """, (pwd_admin, now, pwd_admin, now, pwd_user, now))
+        (?, ?, 'Quản Trị Viên Hệ Thống', 'admin@fakenews.vn', 'admin', 'active', ?)
+        """, (DEFAULT_ADMIN_USER, pwd_admin, now))
         conn.commit()
 
     # Nạp bằng chứng mẫu

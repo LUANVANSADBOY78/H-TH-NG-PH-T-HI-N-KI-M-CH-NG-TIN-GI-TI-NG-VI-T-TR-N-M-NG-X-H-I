@@ -1,124 +1,116 @@
 # 🎯 KỊCH BẢN & NỘI DUNG SLIDE THUYẾT TRÌNH BẢO VỆ ĐỒ ÁN HỌC SÂU
 
-**Đề tài:** Phát hiện và Kiểm chứng Tin giả Tiếng Việt trên Mạng Xã Hội bằng Transformer (PhoBERT) & XAI  
+**Đề tài:** Phát hiện và Kiểm chứng Tin giả Tiếng Việt trên Mạng Xã Hội bằng Transformer (PhoBERT-base-v2) & XAI  
 **Thời lượng dự kiến:** 12 - 15 phút trình bày + 5 phút vấn đáp (Q&A)
 
 ---
 
 ### SLIDE 1: TRANG TIÊU ĐỀ
 - **Tiêu đề:** HỆ THỐNG PHÁT HIỆN & KIỂM CHỨNG TIN GIẢ TIẾNG VIỆT TRÊN MẠNG XÃ HỘI
-- **Mô hình cốt lõi:** Transformer (PhoBERT-base-v2) + Metadata Fusion & Explainable AI (XAI)
+- **Mô hình cốt lõi:** Transformer (PhoBERT-base-v2 Thuần Văn Bản) + Class-Weighted Loss + Explainable AI (XAI)
 - **Học phần:** Học Sâu (Deep Learning) - Khoa Công Nghệ Thông Tin
 - **Người thực hiện:** [Họ và tên sinh viên]
 - **Giảng viên hướng dẫn:** [Tên Giảng viên]
 > 🎙️ **Lời thoại thuyết trình (Speaker Notes):**  
-> *"Kính thưa quý Thầy/Cô trong Hội đồng chấm đồ án môn Học Sâu. Hôm nay em xin phép được trình bày đề tài: 'Nghiên cứu và xây dựng hệ thống phát hiện tin giả tiếng Việt trên mạng xã hội sử dụng mô hình Transformer PhoBERT kết hợp đặc trưng tương tác và giải thích AI'."*
+> *"Kính thưa quý Thầy/Cô trong Hội đồng chấm đồ án môn Học Sâu. Hôm nay em xin phép được trình bày đề tài: 'Nghiên cứu và xây dựng hệ thống phát hiện tin giả tiếng Việt trên mạng xã hội sử dụng mô hình Transformer PhoBERT thuần văn bản kết hợp giải thích trí tuệ nhân tạo (XAI)'."*
 
 ---
 
 ### SLIDE 2: BỐI CẢNH & TÍNH CẤP THIẾT
-- **Thực trạng:** Mạng xã hội Việt Nam (Facebook, TikTok, Zalo) bùng nổ tin sai lệch về sức khỏe, kinh tế, tài chính và lừa đảo trực tuyến.
-- **Thách thức ngôn ngữ:** Ngôn ngữ tiếng Việt phi chuẩn mực: teencode, từ lóng, biểu tượng cảm xúc, cấu trúc ngữ pháp phức tạp và lối hành văn giật gân (clickbait).
-- **Hạn chế của phương pháp cũ:** Kiểm duyệt con người quá tải; các mô hình Machine Learning truyền thống (TF-IDF + SVM) không bắt được ngữ cảnh ngữ nghĩa đa chiều.
-- **Cơ sở khoa học mới nhất:** Công trình của các nhà khoa học Viện Hàn lâm KH&CN Việt Nam (VAST - Báo Nhân Dân, 2026) khẳng định: Việc ứng dụng PhoBERT kết hợp xử lý đa đặc trưng và kiểm chứng bằng chứng là giải pháp đột phá để quản trị và phát hiện tin giả mạng xã hội.
-> 🎙️ **Lời thoại thuyết trình:**  
-> *"Như Thầy/Cô đã biết, tin giả trên mạng xã hội ngày càng tinh vi. Gần đây, nghiên cứu của các nhà khoa học thuộc Viện Hàn lâm KH&CN Việt Nam công bố trên Báo Nhân Dân cũng đã nhấn mạnh vai trò tiên quyết của mô hình PhoBERT trong việc xử lý ngữ nghĩa tiếng Việt mạng xã hội. Đề tài của chúng em đi đúng vào định hướng nghiên cứu cấp thiết này."*
+- **Thực trạng:** Mạng xã hội Việt Nam (Facebook, TikTok, Zalo) bùng nổ tin sai lệch về y tế, tài chính và lừa đảo trực tuyến.
+- **Thách thức ngôn ngữ:** Ngôn ngữ tiếng Việt phi chuẩn mực: teencode, từ lóng, lối viết giật gân (*clickbait*), từ ghép có cấu trúc đa âm tiết.
+- **Hạn chế của phương pháp cũ:** Kiểm duyệt thủ công quá tải; Machine Learning truyền thống (TF-IDF + SVM) chỉ bắt từ khóa bề mặt, không nắm bắt được ngữ cảnh ngữ nghĩa sâu.
+- **Giải pháp:** Sử dụng mô hình Transformer chuyên biệt cho tiếng Việt **PhoBERT-base-v2** để hiểu ngữ cảnh hai chiều của toàn bộ câu văn.
 
 ---
 
-### SLIDE 3: MỤC TIÊU NGHIÊN CỨU & ĐÓNG GÓP
-1. **Xây dựng đường ống xử lý dữ liệu chuẩn:** Chuẩn hóa Unicode NFC, chuẩn hóa teencode và tách từ ghép tiếng Việt.
-2. **Nghiên cứu & Đối sánh mô hình toàn diện:** Từ Baseline truyền thống, Deep Learning (BiLSTM + Attention, TextCNN) đến Transformer (PhoBERT).
-3. **Đề xuất mô hình Cải tiến:** Kết hợp PhoBERT với Mạng nơ-ron đa tầng (MLP) biểu diễn đặc trưng tương tác (like, share, comment) và tối ưu bằng Focal Loss.
-4. **Minh bạch hóa mô hình (XAI):** Ứng dụng Trí tuệ Nhân tạo có thể giải thích để tô màu trực quan các từ khóa ảnh hưởng đến kết quả.
-5. **Sản phẩm ứng dụng thực tiễn:** Hệ thống Web Gradio đa phân hệ hoàn chỉnh kèm Chatbot AI tư vấn.
+### SLIDE 3: MỤC TIÊU NGHIÊN CỨU & NGUYÊN TẮC LIÊM CHÍNH KHOA HỌC
+1. **Xây dựng đường ống xử lý dữ liệu chuẩn:** Chuẩn hóa Unicode NFC, ánh xạ teencode và tách từ ghép tiếng Việt bằng `underthesea`.
+2. **Nghiên cứu & Đối sánh thực nghiệm minh bạch:** So sánh khách quan giữa mô hình Đa số, Machine Learning truyền thống (Naive Bayes, Logistic Regression, Random Forest, Linear SVM) với Deep Learning Transformer (**PhoBERT-base-v2**).
+3. **Phát hiện & Loại bỏ Rò rỉ Nhãn (Target Leakage):** Chứng minh việc dùng metadata mô phỏng sinh theo nhãn dẫn đến F1 ảo (0.99+), kiên quyết tập trung vào **Thuần Văn Bản** để bảo vệ tính liêm chính học thuật.
+4. **Kiểm tra độ vững chắc (Robustness):** Đánh giá chéo nguồn (*Cross-domain*) và Che tên cơ quan báo chí (*Source Masking*).
+5. **Sản phẩm ứng dụng thực tiễn:** Hệ thống Web Gradio tương tác hoàn chỉnh kèm Chatbot AI tư vấn.
 
 ---
 
 ### SLIDE 4: TẬP DỮ LIỆU & QUY TRÌNH TIỀN XỬ LÝ
-- **Quy mô tập dữ liệu:** 2.594 mẫu bài viết tổng hợp từ ViFN Dataset và dữ liệu cào mạng xã hội.
+- **Quy mô tập dữ liệu:** **2.594 bài viết** tổng hợp từ ViFN Dataset Ver 3 (Viện Hàn lâm KH&CN) và dữ liệu cào mạng xã hội.
   - Phân bố: 1.788 tin thật (68.9%) - 806 tin giả (31.1%).
-  - Chia tập: Train (70% - 1.815 mẫu), Validation (15% - 389 mẫu), Test (15% - 390 mẫu).
-- **Quy trình 4 bước làm sạch:**
-  1. *Normalize:* Unicode NFC chuẩn tránh lỗi tổ hợp font.
-  2. *Clean:* Bỏ thẻ HTML, URL, icon rác bằng biểu thức chính quy Regex.
-  3. *Teencode Mapping:* Chuyển đổi từ điển teencode (`ko` $\to$ `không`, `đc` $\to$ `được`).
-  4. *Word Segmentation:* Tách từ ghép tiếng Việt bằng `underthesea` (`sinh_viên`, `tin_tức`).
+  - Phân chia phân tầng (Stratified Split 70/15/15):
+    - **Train:** 1.815 mẫu
+    - **Val:** 389 mẫu
+    - **Test Độc lập:** **390 mẫu** (Gồm đúng **269 tin thật** và **121 tin giả**).
+- **Baseline Đa số (Majority Baseline):** Dự đoán tất cả là Thật $\to$ Accuracy đạt **68.97%**.
+- **Quy trình tiền xử lý:**
+  1. *Unicode NFC:* Tránh lỗi xung đột mã tổ hợp.
+  2. *Làm sạch:* Bỏ URL, HTML, icon rác.
+  3. *Teencode Mapping:* `ko` $\to$ `không`, `đc` $\to$ `được`, `mn` $\to$ `mọi người`.
+  4. *Word Segmentation:* Tách từ ghép bằng `underthesea` (`tin_tức`, `thời_sự`).
 
 ---
 
-### SLIDE 5: KIẾN TRÚC MÔ HÌNH ĐỀ XUẤT (FEATURE FUSION)
-*(Hiển thị sơ đồ khối 2 nhánh)*
-- **Nhánh Văn Bản (PhoBERT-base-v2):** Trích xuất vector ngữ nghĩa sâu $[CLS]$ (768 chiều) qua 12 lớp Multi-Head Self-Attention.
-- **Nhánh Tương Tác Mạng Xã Hội (Metadata MLP):**
-  - Biến đổi $\log(1 + x)$ các trường: Likes, Shares, Comments, Is_Verified.
-  - Đưa qua mạng MLP 2 lớp $\to$ Tạo vector đặc trưng hành vi (32 chiều).
-- **Tầng Dung Hợp (Concatenate):** Nối thành vector 800 chiều $\to$ Dropout (0.3) $\to$ Bộ phân loại Softmax.
-- **Tối ưu bằng Focal Loss:** Giảm thiểu ảnh hưởng của các mẫu tin thật dễ học, tập trung giải quyết các mẫu tin giả khó phân loại.
+### SLIDE 5: KIẾN TRÚC MÔ HÌNH PHOBERT THUẦN VĂN BẢN
+- **Cốt lõi Transformer (PhoBERT-base-v2):** 12 lớp Transformer Encoder, 768 chiều ẩn, 12 attention heads.
+- **Đầu phân loại (Classification Head):** Vector $[CLS]$ 768 chiều $\to$ Dropout (0.1) $\to$ Linear (768 $\to$ 2) $\to$ Softmax.
+- **Xử lý mất cân bằng dữ liệu (Weighted CrossEntropy Loss):**
+  - Trọng số $w_{\text{real}} = 1.0, \quad w_{\text{fake}} = 2.22$ (nghịch đảo tỷ lệ mẫu).
+  - Giúp mô hình không bị "ru ngủ" bởi lớp đa số (tin thật), nâng cao độ nhạy bắt tin giả.
 
 ---
 
-### SLIDE 6: BẢNG KẾT QUẢ THỰC NGHIỆM ĐỐI SÁNH
-*(Trình chiếu bảng so sánh số liệu thực tế)*
+### SLIDE 6: BẢNG TỔNG HỢP KẾT QUẢ THỰC NGHIỆM THẬT (TEST SET N=390)
 
-| Mô hình | Accuracy | Precision | Recall | Macro F1 | Thời gian / mẫu |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| Logistic Regression (TF-IDF) | 88.42% | 87.50% | 89.20% | 0.8834 | ~2 ms |
-| Linear SVM (TF-IDF) | 89.50% | 89.10% | 90.10% | 0.8958 | ~2 ms |
-| TextCNN | 90.15% | 89.80% | 90.50% | 0.9012 | ~12 ms |
-| BiLSTM + Attention | 91.20% | 90.80% | 91.40% | 0.9110 | ~18 ms |
-| **PhoBERT-base (Thuần Văn Bản)** | **93.85%** | **93.80%** | **91.67%** | **0.9264** | **~45 ms** |
-| **PhoBERT + Metadata MLP (Đề xuất)** | **96.50%** | **96.10%** | **96.80%** | **0.9645** | **~48 ms** |
+| Nhóm Mô Hình | Tên Mô Hình Thực Nghiệm | Accuracy | Macro F1 | Precision | Recall | Nguồn Dữ Liệu |
+| :--- | :--- | :---: | :---: | :---: | :---: | :--- |
+| **Baseline Đa số** | Predict All Real (Đoán toàn bộ thật) | 68.97% | 0.4082 | 0.3449 | 0.5000 | Phân bố tập Test (269/390) |
+| **Truyền thống** | Multinomial Naive Bayes (TF-IDF) | 86.92% | 0.8291 | 0.8946 | 0.8006 | Test Set N=390 |
+| | Logistic Regression (TF-IDF) | 87.69% | 0.8593 | 0.8526 | 0.8676 | Test Set N=390 |
+| | Random Forest (TF-IDF) | 88.97% | 0.8657 | 0.8851 | 0.8519 | Test Set N=390 |
+| | Linear SVM (TF-IDF) | 90.00% | 0.8801 | 0.8917 | 0.8707 | Test Set N=390 |
+| **Deep Learning** | **PhoBERT-base-v2 (Thuần Văn Bản)** | **94.62%** | **0.9354** | **0.9487** | **0.9246** | **Checkpoint RTX 3050** |
 
 > 🎙️ **Lời thoại thuyết trình:**  
-> *"Nhìn vào bảng số liệu thực nghiệm, mô hình Transformer PhoBERT vượt trội hoàn toàn so với các mạng nơ-ron cổ điển với F1 đạt 92.64%. Đặc biệt, khi được dung hợp thêm thông tin tương tác xã hội (Metadata MLP), Macro F1 của hệ thống đạt đỉnh 96.45%, khẳng định giả thuyết rằng hành vi tương tác bổ trợ rất lớn cho nội dung bài viết."*
+> *"Nhìn vào bảng số liệu thực nghiệm hoàn toàn khách quan trên 390 mẫu test độc lập, PhoBERT-base-v2 vượt trội rõ rệt: đạt Accuracy 94.62% và Macro F1 93.54%, vượt xa baseline đa số (+25.65%) và vượt mô hình Linear SVM mạnh nhất (+4.62% Accuracy và +5.53% F1). Toàn bộ số liệu này được xuất tự động từ checkpoint huấn luyện thật lưu trong hệ thống."*
 
 ---
 
-### SLIDE 7: MA TRẬN NHẦM LẪN & ABLATION STUDY
-- **Ma trận nhầm lẫn (Confusion Matrix trên 390 mẫu Test):**
-  - Nhận diện đúng 262/269 tin thật (97.4%).
-  - Nhận diện đúng 104/121 tin giả (86.0%).
-  - Chỉ số **ROC-AUC đạt 0.9799**, chứng tỏ mô hình có năng lực phân tách phân phối cực kỳ vững vàng.
-- **Ablation Study (Nghiên cứu bóc tách):**
-  - Bỏ tách từ ghép: F1 giảm ngay **4.52%**.
-  - Bỏ tiền xử lý Teencode: F1 giảm **1.85%** trên tập tin mạng xã hội.
-  - Bỏ Metadata tương tác: F1 giảm **3.81%**.
+### SLIDE 7: MA TRẬN NHẦM LẪN & ĐỘ VỮNG CHẮC (ROBUSTNESS)
+- **Ma trận nhầm lẫn thực nghiệm trên 390 mẫu Test:**
+  $$\begin{bmatrix} 264 & 5 \\ 16 & 105 \end{bmatrix}$$
+  - Nhận diện đúng **264 / 269** tin thật (**98.14%**). Chỉ đoán nhầm 5 mẫu.
+  - Bắt chính xác **105 / 121** tin giả (**86.78%** Recall, **95.45%** Precision).
+  - Tổng các hàng khớp tuyệt đối: $264 + 5 = 269$ và $16 + 105 = 121$.
+  - Chỉ số **ROC-AUC đạt 0.9843**.
+- **Thực nghiệm Che tên báo & URL (Source Masking):**
+  - Che VnExpress, Tuổi Trẻ, Zing, URL $\to$ F1 chỉ giảm nhẹ **0.26%**, chứng minh mô hình hiểu ngữ nghĩa chứ không học vẹt tên báo.
+- **Thực nghiệm Đánh giá chéo nguồn (Domain Shift):**
+  - Train trên ViFN báo chí $\to$ Test mạng xã hội $\to$ F1 giảm **17.44%**, phản ánh đúng khoảng cách phong cách giữa báo chí và mạng xã hội.
 
 ---
 
-### SLIDE 8: GIẢI THÍCH MÔ HÌNH (XAI) & PHÂN TÍCH LỖI
-- **Giải thích AI (Explainable AI):** Không coi mô hình là "hộp đen". Hệ thống gán trọng số độ chú ý và hiển thị trực quan các từ khóa mang tính giật gân, lừa đảo (ví dụ: *"khẩn cấp", "uống lá ổi", "trị dứt điểm", "bị xóa bài"*).
-- **Ước lượng độ bất định (Monte Carlo Dropout):** Đo lường mức độ tự tin của mạng nơ-ron; nếu độ lệch chuẩn $\sigma > 0.15$, hệ thống tự động gắn nhãn cảnh báo cần sự can thiệp của chuyên gia.
-- **Phân tích lỗi (Error Analysis):** Các trường hợp sai chủ yếu rơi vào các bài viết trào phúng, châm biếm thâm thúy hoặc tin tức đúng nhưng bị giật tít câu view.
+### SLIDE 8: BÀI HỌC VỀ RÒ RỈ NHÃN (TARGET LEAKAGE)
+- **Thực nghiệm đối chứng:** Khi sinh metadata tương tác (like/share) theo nhãn, mô hình đạt F1 bất thường **0.997 - 1.000**.
+- **Bản chất khoa học:** Khoảng chia sẻ của tin giả ($[0.25, 0.75]$) và tin thật ($[0.04, 0.20]$) bị rời rạc hoàn toàn, vô tình đưa "đáp án" vào đầu vào.
+- **Quyết định phương pháp luận:** Nhóm nghiên cứu kiên quyết loại bỏ metadata mô phỏng, chỉ giữ mô hình thuần văn bản để đảm bảo **liêm chính học thuật 100%**.
 
 ---
 
-### SLIDE 9: KIẾN TRÚC HỆ THỐNG PHẦN MỀM & DEMO
-- **Backend:** Python, PyTorch, Hugging Face Transformers, SQLite Database.
-- **Giao diện Web Gradio gồm 6 Phân Hệ:**
-  1. *Kiểm tra tin tức:* Dán bài viết hoặc URL báo chí, chia nhỏ đoạn (chunking), XAI tô màu từ khóa.
-  2. *Phân tích hàng loạt (Batch CSV):* Gắn nhãn tự động cho hàng trăm bài viết cùng lúc.
-  3. *So sánh 2 bài viết:* Đo độ tương đồng ngữ nghĩa Cosine Similarity và chỉ ra điểm mâu thuẫn.
-  4. *Lịch sử & Phản hồi:* Lưu trữ cơ sở dữ liệu và xử lý khiếu nại.
-  5. *Chatbot AI:* Tư vấn quy trình 5 bước kiểm chứng tin tức.
-  6. *Dashboard Admin:* Theo dõi đồ thị huấn luyện và biểu đồ thực nghiệm.
+### SLIDE 9: GIẢI THÍCH MÔ HÌNH (XAI) & HỆ THỐNG DEMO
+- **Minh bạch hóa AI (XAI):** Sử dụng trọng số từ vựng để tô màu trực quan các từ khóa kích động cảm xúc hoặc từ ngữ mang tính kiểm chứng.
+- **Ứng dụng Web Gradio hoàn chỉnh:**
+  - Kiểm tra đơn lẻ kèm chunking văn bản dài.
+  - Phân tích hàng loạt (Batch CSV).
+  - Đối chiếu 2 nguồn tin đối lập.
+  - Chatbot AI hỗ trợ cộng đồng.
+  - Admin Dashboard theo dõi biểu đồ Loss/F1 thực tế.
 
 ---
 
 ### SLIDE 10: KẾT LUẬN & HƯỚNG PHÁT TRIỂN
 - **Kết luận:**
-  - Hoàn thành xuất sắc toàn bộ mục tiêu của đồ án môn Học Sâu.
-  - Chứng minh tính hiệu quả vượt trội của PhoBERT và cơ chế Feature Fusion trên ngữ liệu tiếng Việt (F1 đạt đỉnh 96.45%).
-  - Xây dựng thành công ứng dụng demo hoàn chỉnh có thể đưa vào phục vụ cộng đồng.
-- **Hướng phát triển (Tiếp thu nghiên cứu của Viện Hàn lâm KH&CN Việt Nam):**
-  - Mở rộng kiến trúc Đa phương thức: Kết hợp PhoBERT với Vision Transformer (ViT) qua cơ chế Chú ý chéo (Cross-Attention) để phát hiện sự bất nhất giữa nội dung văn bản và hình ảnh/video.
-  - Ứng dụng Chưng cất tri thức (Knowledge Distillation) và Cơ sở dữ liệu Vector (Vector DB / Milvus) để tối ưu chi phí hạ tầng và đáp ứng giám sát thời gian thực.
-
----
-
-### SLIDE 11: PHIÊN HỎI ĐÁP (Q&A) & LỜI CẢM ƠN
-- Em xin chân thành cảm ơn quý Thầy/Cô trong Hội đồng đã chú ý lắng nghe!
-- Em rất mong nhận được những góp ý quý báu của Thầy/Cô.
-- **Sẵn sàng chuyển sang phần thực nghiệm Demo hệ thống trực tiếp.**
-
+  - Hoàn thành xuất sắc toàn bộ mục tiêu đề tài môn Học Sâu.
+  - Dữ liệu minh bạch, mã nguồn sạch, số liệu thực nghiệm trung thực và có thể tái lập hoàn toàn.
+- **Hướng phát triển:**
+  - Nghiên cứu AI đa phương thức (Multimodal Fusion: Văn bản + Hình ảnh) với dữ liệu người dùng thật.
+  - Áp dụng kỹ thuật RAG đối chiếu tin tức thời gian thực.
+- **Lời cảm ơn:** Em xin chân thành cảm ơn Thầy/Cô đã lắng nghe và rất mong nhận được câu hỏi phản biện từ Hội đồng!

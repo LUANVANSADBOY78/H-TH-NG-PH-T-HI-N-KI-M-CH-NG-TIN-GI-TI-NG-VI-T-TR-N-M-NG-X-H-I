@@ -1,0 +1,26 @@
+{
+  "cross_domain_evaluation": {
+    "source_a_vifn_count": 2166,
+    "source_b_social_count": 428,
+    "in_domain_vifn": {
+      "accuracy": 0.924,
+      "macro_f1": 0.9125
+    },
+    "cross_domain_social": {
+      "accuracy": 0.7804,
+      "macro_f1": 0.7381
+    },
+    "performance_drop_f1_percentage": -17.44
+  },
+  "source_name_and_url_masking": {
+    "original_test": {
+      "accuracy": 0.8769,
+      "macro_f1": 0.8581
+    },
+    "masked_test": {
+      "accuracy": 0.8744,
+      "macro_f1": 0.8555
+    },
+    "impact_f1_percentage": -0.26
+  }
+}

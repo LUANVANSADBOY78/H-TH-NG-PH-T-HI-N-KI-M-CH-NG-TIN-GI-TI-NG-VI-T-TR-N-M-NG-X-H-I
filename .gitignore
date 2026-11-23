@@ -6,13 +6,18 @@ __pycache__/
 .Python
 
 # Large Model Checkpoints & Weights (> 100MB rejected by GitHub)
-# Large binaries & tools
 cloudflared.exe
-outputs/
+outputs/phobert/
 *.safetensors
 *.bin
+*.pt
 optimizer.pt
 *.ckpt
+
+# Server PID & Runtime State
+.web_server.pid
+*.pid
+data/fake_news_system.db
 
 # Gradio cache & certs
 .gradio/
@@ -37,4 +42,3 @@ Thumbs.db
 
 # Temporary outputs & logs
 *.log
-

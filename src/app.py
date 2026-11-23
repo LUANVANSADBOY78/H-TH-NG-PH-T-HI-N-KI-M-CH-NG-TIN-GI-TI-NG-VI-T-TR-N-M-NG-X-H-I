@@ -829,6 +829,14 @@ if __name__ == "__main__":
     cli_args, _ = parser.parse_known_args()
     is_share = cli_args.share
 
+    # Ghi nhận PID để đóng tiến trình an toàn
+    pid_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), ".web_server.pid")
+    try:
+        with open(pid_path, "w", encoding="utf-8") as f:
+            f.write(str(os.getpid()))
+    except Exception:
+        pass
+
     app = build_full_application()
     active_port = 7860
     try:
@@ -857,5 +865,15 @@ if __name__ == "__main__":
         while True:
             time.sleep(3600)
     except (KeyboardInterrupt, SystemExit):
+        pass
+    finally:
         if cf_proc:
-            cf_proc.terminate()
+            try:
+                cf_proc.terminate()
+            except Exception:
+                pass
+        if os.path.exists(pid_path):
+            try:
+                os.remove(pid_path)
+            except Exception:
+                pass
